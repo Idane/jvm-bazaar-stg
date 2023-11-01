@@ -1,8 +1,4 @@
 name: "Main"
-on:
-  push:
-    branches:
-      - main
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
