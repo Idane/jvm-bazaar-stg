@@ -24,6 +24,6 @@ jobs:
           args: >
             -Dsonar.organization=${{steps.setupSonar.outputs.SONAR_ORGANIZATION}}
             -Dsonar.projectKey=${{steps.setupSonar.outputs.SONAR_PROJECT_KEY}}
-            -Dsonar.qualitygate.wait=true ## Failed analysis will fail the action
+            -Dsonar.qualitygate.wait=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
