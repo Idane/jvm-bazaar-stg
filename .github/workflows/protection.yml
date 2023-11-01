@@ -1,0 +1,31 @@
+name: Updating Branch Protection Rules
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+        - '.github/workflows/branch-protection-rules.yml'
+        - '.github/branch-protection-rules'
+jobs:
+  edit-settings-yaml:  
+    name: Update Branch Protection Rules
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: token-creator
+        uses: getsentry/action-github-app-token@v2.0.0
+        with:
+          app_id: ${{ secrets.ORG_TOKEN_APP_ID }}
+          private_key: ${{ secrets.ORG_TOKEN_APP_PRIVATE_KEY }}
+      - run: |
+          ### GET CURRENT BRANCH PROTECTION RULES ###
+          gh api --method GET repos/${{ github.repository }}/branches/main/protection
+          ###  UPDATE BRANCH PROTECTION RULES ###
+          gh api --method PUT repos/${{ github.repository }}/branches/main/protection --input .github/branch-protection-rules
+        env:
+            GITHUB_TOKEN: ${{ steps.token-creator.outputs.token }}
